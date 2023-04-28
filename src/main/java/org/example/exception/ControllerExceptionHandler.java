@@ -20,7 +20,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
-        return new ResponseEntity<>("Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Error: access denied.", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -43,33 +43,4 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Error id={}", errorMessage.getId().toString(), e.getCause() == null ? e : e.getCause());
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
-
-    /*private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
-        Throwable rootCause = NestedExceptionUtils.getRootCause(e)  == null ? e : NestedExceptionUtils.getRootCause(e);
-        if (logException) {
-            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
-        } else {
-            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
-        }
-        return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
-    }
-
-    public static class ErrorInfo {
-        private final String url;
-        private final ErrorType type;
-        private final String detail;
-
-        public ErrorInfo(CharSequence url, ErrorType type, String detail) {
-            this.url = url.toString();
-            this.type = type;
-            this.detail = detail;
-        }
-    }
-
-    public enum ErrorType {
-        APP_ERROR,
-        DATA_NOT_FOUND,
-        DATA_ERROR,
-        VALIDATION_ERROR
-    }*/
 }

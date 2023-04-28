@@ -43,7 +43,6 @@ CREATE TABLE DISH
 
 CREATE TABLE VOTE
 (
-    -- id            BIGINT DEFAULT NULL,
     user_id       BIGINT PRIMARY KEY,
     restaurant_id BIGINT   NOT NULL, -- Should be unique?
     vote_date     DATETIME NULL,

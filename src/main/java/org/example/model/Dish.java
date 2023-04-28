@@ -30,7 +30,4 @@ public class Dish extends BaseEntity {
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled;
 
-    //@ManyToOne() //fetch = FetchType.EAGER
-    //@JoinColumn(name = "restaurant_id")
-    //private Restaurant restaurant;
 }

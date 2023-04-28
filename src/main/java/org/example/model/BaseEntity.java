@@ -6,13 +6,13 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
 
-@MappedSuperclass
-@Access(AccessType.FIELD)
 @Getter
 @Setter
+@ToString
+@MappedSuperclass
+@Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public abstract class BaseEntity implements Persistable<Long> {
 
     @Id
@@ -30,7 +30,7 @@ public abstract class BaseEntity implements Persistable<Long> {
         return id == null;
     }
 
-    //    https://stackoverflow.com/questions/1638723
+    // https://stackoverflow.com/questions/1638723
     @Override
     public boolean equals(Object o) {
         if (this == o) {

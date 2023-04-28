@@ -25,35 +25,21 @@ import java.util.Optional;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-@Configuration
-@EnableWebSecurity(debug = true)
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableMethodSecurity(securedEnabled = true) // Add this
-
 @Slf4j
+@Configuration
 @AllArgsConstructor
+@EnableWebSecurity(debug = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private final UserRepository userRepository;
 
-    //private final RestAuthenticationEntryPoint authenticationEntryPoint;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PASSWORD_ENCODER;
     }
-
-    /*@Bean
-    public UserDetailsService userDetailsService() {
-        return email -> {
-            log.debug("Authenticating '{}'", email);
-            Optional<User> optionalUser = userRepository.findByEmailIgnoreCase(email);
-            return new AuthUser(optionalUser.orElseThrow(
-                    () -> new UsernameNotFoundException("User '" + email + "' was not found")));
-        };
-    }*/
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -73,37 +59,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                //.requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-
                 .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
                 .requestMatchers("/api/user/**").hasRole(Role.USER.name())
-                .requestMatchers("/api/view/**").permitAll() //.hasAnyRole(Role.ADMIN.name(), Role.USER.name())
-                //.requestMatchers("/api/**").authenticated()
-
-                .and().exceptionHandling().accessDeniedPage("/api/view/403") //BAD IDEA, bumps into infinite loop
-                //.and().formLogin()
-                //.and().logout().logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true)
-                //.requestMatchers(HttpMethod.GET, "/api/admin/restaurants").hasRole(Role.ADMIN.name())
-                //.requestMatchers(POST, "/api/admin/restaurants/1/new").hasRole(Role.ADMIN.name())
-                //.requestMatchers(POST, "/api/admin/restaurants/**").hasRole(Role.ADMIN.name())
-                .and()
-                // .addFilterAfter(new JWTAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))), AccessDeniedExceptionFilter.class)
-
-                //.requestMatchers("/api/**").permitAll()
-                //.requestMatchers(HttpMethod.POST, "/api/profile").anonymous()
-                .httpBasic()
-                //.authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                //.addFilterAfter(customFilter, AccessDeniedExceptionFilter.class)
-                //.addFilterBefore(customFilter, DisableEncodeUrlFilter.class)
-
-                //.addFilter(customFilter)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .requestMatchers("/api/view/**").permitAll()
+                .and().exceptionHandling().accessDeniedPage("/api/view/403")
+                .and().httpBasic()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().csrf().ignoringRequestMatchers(toH2Console()).disable()
                 .headers().frameOptions().disable(); // https://stackoverflow.com/questions/53395200/h2-console-is-not-showing-in-browser
-        //http.addFilterAfter(new JWTAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))), AccessDeniedExceptionFilter.class);
-       //http.addFilter(new AccessDeniedExceptionFilter());
         return http.build();
     }
 

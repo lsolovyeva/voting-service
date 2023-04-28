@@ -1,11 +1,10 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.repository.RestaurantRepository;
 import org.example.repository.UserRepository;
 import org.example.repository.VoteRepository;
-import org.hibernate.annotations.DialectOverride;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -61,12 +60,7 @@ class VoteServiceTest {
         Date notEligibleDate = new Date();
         notEligibleDate.setTime(1682010000000L); // 20/04/2023, 20:00
         when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
-        assertNull(voteService.processVote(USER_ID, RESTAURANT_ID, notEligibleDate));
-    }
-
-    @Test
-    @Disabled
-    void testProcessVote() {
+        assertThrows(UnsupportedOperationException.class, () -> voteService.processVote(USER_ID, RESTAURANT_ID, notEligibleDate));
     }
 
     @Test
@@ -78,6 +72,6 @@ class VoteServiceTest {
     @Test
     void testNotGetVotesCountWhenRestaurantNotExist() {
         when(restaurantRepository.findById(any())).thenReturn(Optional.empty());
-        assertNull(voteService.getVotesCount(RESTAURANT_ID));
+        assertThrows(EntityNotFoundException.class, () -> voteService.getVotesCount(RESTAURANT_ID));
     }
 }

@@ -23,27 +23,25 @@ public class DishController {
     @PostMapping(value = "/add/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Dish> create(@RequestBody DishRequest dishRequest, @PathVariable(name = "restaurant_id") Long restaurantId) { // @PathVariable(name = "user_id") Long userId //, @AuthenticationPrincipal User authUser
+    public ResponseEntity<Dish> create(@RequestBody DishRequest dishRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
         Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
-        return new ResponseEntity<>(dishService.addNewDish(dish, restaurantId), CREATED); //, authUser.getId()
+        return new ResponseEntity<>(dishService.addNewDish(dish, restaurantId), CREATED);
     }
 
     //change menu - update dish
     @PutMapping(value = "/update/{dish_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
-    public void update(@RequestBody DishRequest dishRequest, @PathVariable(name = "dish_id") Long dishId) { // @PathVariable(name = "user_id") Long userId, //, @AuthenticationPrincipal User authUser
+    public void update(@RequestBody DishRequest dishRequest, @PathVariable(name = "dish_id") Long dishId) {
         Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
-        dishService.updateDish(dish, dishId); //authUser.getId()
+        dishService.updateDish(dish, dishId);
     }
 
     //change menu - (remove dish with audit) = disable/enable
     @PutMapping("/disable/{dish_id}")
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
-    public void toggle(@PathVariable(name = "dish_id") Long dishId) { // @PathVariable(name = "user_id") Long userId, //, @AuthenticationPrincipal User authUser
-        dishService.changeDishActivation(dishId); //authUser.getId(),
+    public void toggle(@PathVariable(name = "dish_id") Long dishId) {
+        dishService.changeDishActivation(dishId);
     }
-
-    //add when admin is authorized?
 }

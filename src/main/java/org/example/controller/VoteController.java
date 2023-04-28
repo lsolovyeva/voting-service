@@ -15,7 +15,7 @@ import java.util.Date;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping(value="/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteController {
 
     @Autowired
@@ -25,16 +25,7 @@ public class VoteController {
     @PostMapping("/vote/{restaurant_id}")
     @ResponseStatus(CREATED)
     @Secured({"ROLE_USER"})
-    public ResponseEntity<Vote> vote(@PathVariable(name = "restaurant_id") Long restaurantId, @AuthenticationPrincipal User authUser) { //@PathVariable(name = "user_id") Long userId,
+    public ResponseEntity<Vote> vote(@PathVariable(name = "restaurant_id") Long restaurantId, @AuthenticationPrincipal User authUser) {
         return new ResponseEntity<>(voteService.processVote(authUser.getId(), restaurantId, new Date()), CREATED);
     }
-
-    //vote for a restaurant if user has already LOGGED IN
-    /*@PostMapping("vote/{restaurant_id}")
-    @ResponseStatus(CREATED)
-    public ResponseEntity<Vote> voteAuthorised(@PathVariable(name = "restaurant_id") Long restaurantId) {
-        return new ResponseEntity<>(voteService.processVote(restaurantId, new Date()), CREATED);
-    }*/
-
-    // get restaurants with menu + cache?
 }

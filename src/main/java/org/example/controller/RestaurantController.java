@@ -23,24 +23,17 @@ public class RestaurantController {
     @PostMapping(value = "/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
-    //@PreAuthorize("hasRole('ROLE_ADMIN')"), @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Restaurant> create(@RequestBody RestaurantRequest restaurantRequest) { // @PathVariable(name = "user_id") Long userId // @AuthenticationPrincipal User authUser
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //System.out.println(authentication.getAuthorities());
+    public ResponseEntity<Restaurant> create(@RequestBody RestaurantRequest restaurantRequest) {
         Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
-        return new ResponseEntity<>(restaurantService.save(restaurant), CREATED); //authUser.getUser().getId()
-        //return restaurantService.save(restaurant, authUser.getId()); //authUser.getUser().getId()
+        return new ResponseEntity<>(restaurantService.save(restaurant), CREATED);
     }
 
     //update restaurant
     @PutMapping(value = "/update/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
-    public void update(@RequestBody RestaurantRequest restaurantRequest, @PathVariable(name = "restaurant_id") Long restaurantId) { //@PathVariable(name = "user_id") Long userId,//, @AuthenticationPrincipal User authUser
+    public void update(@RequestBody RestaurantRequest restaurantRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
         Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
         restaurantService.update(restaurant, restaurantId);
     }
-
-    //add when admin is authorized?
-
 }

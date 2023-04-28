@@ -1,7 +1,6 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,7 +24,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users", schema = "votes", catalog = "voting")
-public class User extends BaseEntity  implements Serializable, UserDetails { //extends AbstractBaseEntity {
+public class User extends BaseEntity implements Serializable, UserDetails {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -48,7 +47,8 @@ public class User extends BaseEntity  implements Serializable, UserDetails { //e
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique")})
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @BatchSize(size = 20)

@@ -49,7 +49,7 @@ class DishControllerTest extends MockMvcControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(dishRequest)))
                 .andDo(print())
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andExpect(content().string(""))
                 .andReturn();
     }

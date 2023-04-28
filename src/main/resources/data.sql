@@ -14,10 +14,6 @@ INSERT INTO RESTAURANT(name)
 VALUES ('London Paradise'),
        ('Moscow Night');
 
--- INSERT INTO RESTAURANT (id)
--- VALUES (1),
--- (2);
-
 INSERT INTO DISH (name, price, restaurant_id)
 VALUES ('Pizza', 100.00, 1),
        ('Cake', 50.90, 1),

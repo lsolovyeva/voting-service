@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.Dish;
 import org.example.repository.DishRepository;
 import org.example.repository.RestaurantRepository;
@@ -34,7 +35,7 @@ class DishServiceTest {
 
     @BeforeEach
     void setup() {
-        dishService = new DishService(dishRepository, restaurantRepository, userRepository);
+        dishService = new DishService(dishRepository, restaurantRepository);
         testDish.setId(1L);
         lenient().when(userRepository.findById(ADMIN_ID)).thenReturn(Optional.of(testAdmin));
     }
@@ -48,16 +49,16 @@ class DishServiceTest {
     }
 
     @Test
-    void NotAddNewDishWhenNotAdmin() {
+    void NotAddNewDishWhenAlreadyPresent() {
         when(restaurantRepository.findById(RESTAURANT_ID)).thenReturn(Optional.of(testRestaurant));
-        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(testUser));
-        assertNull(dishService.addNewDish(testDish, RESTAURANT_ID));
+        when(restaurantRepository.findByRestaurantIdAndDishName(any(), any())).thenReturn(Optional.of(testRestaurant));
+        assertThrows(UnsupportedOperationException.class, () -> dishService.addNewDish(testDish, RESTAURANT_ID));
     }
 
     @Test
     void NotAddNewDishWhenRestaurantNotFound() {
         when(restaurantRepository.findById(RESTAURANT_ID)).thenReturn(Optional.empty());
-        assertNull(dishService.addNewDish(testDish, RESTAURANT_ID));
+        assertThrows(EntityNotFoundException.class, () -> dishService.addNewDish(testDish, RESTAURANT_ID));
     }
 
     @Test
@@ -70,7 +71,7 @@ class DishServiceTest {
     @Test
     void notUpdateDishWhenNotFound() {
         when(dishRepository.findById(any())).thenReturn(Optional.empty());
-        assertFalse(dishService.updateDish(testDish, DISH_ID));
+        assertThrows(EntityNotFoundException.class, () -> dishService.updateDish(testDish, DISH_ID));
     }
 
     @Test
