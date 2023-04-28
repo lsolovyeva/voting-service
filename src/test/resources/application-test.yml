@@ -1,0 +1,22 @@
+spring.cache.type: none
+
+#spring:
+#  datasource:
+#    url: jdbc:h2:~/voting;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS votes;
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
+#  jpa:
+#    hibernate:
+#      default_schema: votes
+
+
+#spring:
+#  sql:
+#    init:
+#      mode: never
+#      data-locations: import.sql
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#

@@ -1,0 +1,54 @@
+CREATE SCHEMA IF NOT EXISTS VOTES;
+USE VOTES;
+
+DROP TABLE IF EXISTS USER_ROLE;
+DROP TABLE IF EXISTS DISH;
+DROP TABLE IF EXISTS VOTE;
+DROP TABLE IF EXISTS RESTAURANT;
+DROP TABLE IF EXISTS USERS;
+
+
+CREATE TABLE USERS
+(
+    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email      VARCHAR(255) NOT NULL UNIQUE,
+    first_name VARCHAR(255) NOT NULL,
+    last_name  VARCHAR(255) NOT NULL,
+    password   VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE USER_ROLE
+(
+    user_id BIGINT       NOT NULL,
+    role    VARCHAR(255) NOT NULL,
+    CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE
+);
+
+CREATE TABLE RESTAURANT
+(
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE DISH
+(
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name          VARCHAR(120)   NOT NULL,
+    price         DECIMAL(15, 2) NOT NULL,
+    enabled       BOOLEAN DEFAULT TRUE,
+    restaurant_id BIGINT         NULL, -- Should be unique?
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
+);
+
+CREATE TABLE VOTE
+(
+    -- id            BIGINT DEFAULT NULL,
+    user_id       BIGINT PRIMARY KEY,
+    restaurant_id BIGINT   NOT NULL, -- Should be unique?
+    vote_date     DATETIME NULL,
+    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
+);
+
+-- один уникальный пункт меню в день - это constraint (restaurantId, date, name)
