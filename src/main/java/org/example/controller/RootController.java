@@ -40,7 +40,7 @@ public class RootController {
 
     @GetMapping("/menu/{restaurant_id}")
     public List<Dish> getAllDishesFor(@PathVariable(name = "restaurant_id") Long restaurantId) {
-        return dishService.getAllDishes(restaurantId);
+        return dishService.getAllDishes(restaurantId); // TODO: count only active
     }
 
     @GetMapping("/restaurants")

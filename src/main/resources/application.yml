@@ -21,9 +21,6 @@ spring:
   h2:
     console:
       enabled: true
-  security:
-    filter:
-      order: 0
 
 logging:
   level:
@@ -32,6 +29,7 @@ logging:
         web:
           filter:
             CommonsRequestLoggingFilter: DEBUG
+        transaction: DEBUG
 
     root: WARN
     org.example: DEBUG
