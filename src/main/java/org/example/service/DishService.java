@@ -7,11 +7,15 @@ import org.example.model.Dish;
 import org.example.model.Restaurant;
 import org.example.repository.DishRepository;
 import org.example.repository.RestaurantRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.config.AppConfig.DISHES_CACHE;
 
 @Slf4j
 @Service
@@ -26,6 +30,7 @@ public class DishService {
     }
 
     @Transactional
+    @CacheEvict(value = DISHES_CACHE, allEntries = true)
     public Dish addNewDish(Dish dish, Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
@@ -44,6 +49,7 @@ public class DishService {
     }
 
     @Transactional
+    @CacheEvict(value = DISHES_CACHE, allEntries = true)
     public boolean updateDish(Dish dish, Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
@@ -54,6 +60,7 @@ public class DishService {
     }
 
     @Transactional
+    @CacheEvict(value = DISHES_CACHE, allEntries = true)
     public boolean changeDishActivation(Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
@@ -62,6 +69,7 @@ public class DishService {
         return true;
     }
 
+    @Cacheable(value = DISHES_CACHE)
     public List<Dish> getAllDishes(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId).orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
         return restaurant.getDishes();

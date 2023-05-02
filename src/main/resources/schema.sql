@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS VOTE;
 DROP TABLE IF EXISTS RESTAURANT;
 DROP TABLE IF EXISTS USERS;
 
-
 CREATE TABLE USERS
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -37,17 +36,17 @@ CREATE TABLE DISH
     name          VARCHAR(120)   NOT NULL,
     price         DECIMAL(15, 2) NOT NULL,
     enabled       BOOLEAN DEFAULT TRUE,
-    restaurant_id BIGINT         NULL, -- Should be unique?
+    restaurant_id BIGINT         NULL,
+    CONSTRAINT restaurant_unique_dish_idx UNIQUE (restaurant_id, name),
     FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
 );
 
 CREATE TABLE VOTE
 (
     user_id       BIGINT PRIMARY KEY,
-    restaurant_id BIGINT   NOT NULL, -- Should be unique?
+    restaurant_id BIGINT   NOT NULL,
     vote_date     DATETIME NULL,
+    CONSTRAINT user_unique_vote_date_idx UNIQUE (user_id, vote_date),
     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
     FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
 );
-
--- один уникальный пункт меню в день - это constraint (restaurantId, date, name)

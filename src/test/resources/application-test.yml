@@ -1,4 +1,6 @@
-spring.cache.type: none
+spring:
+  cache:
+    type: none
 
 #spring:
 #  datasource:
@@ -20,3 +22,4 @@ spring.cache.type: none
 #    hibernate:
 #      ddl-auto: update
 #
+

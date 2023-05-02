@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.dto.RestaurantRequest;
 import org.example.model.Restaurant;
 import org.example.service.RestaurantService;
@@ -23,7 +24,7 @@ public class RestaurantController {
     @PostMapping(value = "/new", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Restaurant> create(@RequestBody RestaurantRequest restaurantRequest) {
+    public ResponseEntity<Restaurant> create(@Valid @RequestBody RestaurantRequest restaurantRequest) {
         Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
         return new ResponseEntity<>(restaurantService.save(restaurant), CREATED);
     }
@@ -32,7 +33,7 @@ public class RestaurantController {
     @PutMapping(value = "/update/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
-    public void update(@RequestBody RestaurantRequest restaurantRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
+    public void update(@Valid @RequestBody RestaurantRequest restaurantRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
         Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
         restaurantService.update(restaurant, restaurantId);
     }

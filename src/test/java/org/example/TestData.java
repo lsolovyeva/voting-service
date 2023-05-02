@@ -22,17 +22,12 @@ public class TestData {
     public static final User testUser = new User(USER_MAIL, "User", "Last", "password", Collections.singleton(Role.USER));
     public static final User testAdmin = new User(ADMIN_MAIL, "Admin", "Last", "admin", Collections.singleton(Role.ADMIN));
 
-    //(USER_ID, "User", USER_MAIL, "password", Role.USER);
-    //public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_MAIL, "admin", Role.ADMIN, Role.USER);
-
     public static final DishRequest dishRequest = new DishRequest("pizza", new BigDecimal("50.5"));
     public static final RestaurantRequest restaurantRequest = new RestaurantRequest("testRestaurantName");
 
     public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), true);
     public static final Restaurant testRestaurant = new Restaurant("testRestaurantName", null);
     public static final Vote testVote = new Vote(VOTE_ID, testUser, testRestaurant, new Date());
-
-
 
     public static String asJsonString(final Object obj) {
         try {

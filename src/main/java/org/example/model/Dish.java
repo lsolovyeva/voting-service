@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @Builder
-//@ToString(exclude = "restaurant")
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "dish", schema = "votes", catalog = "voting")

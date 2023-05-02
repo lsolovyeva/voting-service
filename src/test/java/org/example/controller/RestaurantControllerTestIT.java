@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,28 +19,15 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-//@WebMvcTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class))
 class RestaurantControllerTestIT {
 
     @Autowired
     private WebApplicationContext ctx;
 
+    @MockBean
+    private CacheManager cacheManager;
+
     protected MockMvc mvc;
-
-    /*@MockBean
-    private RestaurantService service;
-
-    @MockBean
-    private DishService dishService;
-
-    @MockBean
-    private VoteService voteService;
-
-    @MockBean
-    private RestaurantRepository restaurantRepository;
-
-    @MockBean
-    private UserRepository userRepository;*/
 
     @MockBean
     private AppConfig appConfig; // not to run AppConfig twice
@@ -55,7 +43,6 @@ class RestaurantControllerTestIT {
     @Test
     void notGetAllRestaurantsWhenUnauthorized() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/api/admin/restaurants").accept(MediaType.APPLICATION_JSON))
-                        //.with(SecurityMockMvcRequestPostProcessors.user("manager").roles("UNKNOWN")))
                 .andExpect(status().isUnauthorized());
     }
 

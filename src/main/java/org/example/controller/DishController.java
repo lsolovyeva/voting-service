@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.dto.DishRequest;
 import org.example.model.Dish;
 import org.example.service.DishService;
@@ -23,7 +24,7 @@ public class DishController {
     @PostMapping(value = "/add/{restaurant_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Dish> create(@RequestBody DishRequest dishRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
+    public ResponseEntity<Dish> create(@Valid @RequestBody DishRequest dishRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
         Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
         return new ResponseEntity<>(dishService.addNewDish(dish, restaurantId), CREATED);
     }
@@ -32,7 +33,7 @@ public class DishController {
     @PutMapping(value = "/update/{dish_id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
-    public void update(@RequestBody DishRequest dishRequest, @PathVariable(name = "dish_id") Long dishId) {
+    public void update(@Valid @RequestBody DishRequest dishRequest, @PathVariable(name = "dish_id") Long dishId) {
         Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
         dishService.updateDish(dish, dishId);
     }

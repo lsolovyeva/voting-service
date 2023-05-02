@@ -35,7 +35,6 @@ public class SecurityConfig {
 
     private final UserRepository userRepository;
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PASSWORD_ENCODER;

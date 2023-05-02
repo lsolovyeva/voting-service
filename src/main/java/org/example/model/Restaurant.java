@@ -8,7 +8,6 @@ import lombok.*;
 
 import java.util.List;
 
-//@Data
 @Getter
 @Setter
 @Builder
@@ -24,8 +23,7 @@ public class Restaurant extends BaseEntity {
     private String name;
 
     //menu
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    //mappedBy = "restaurant", fetch = FetchType.EAGER
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) //mappedBy = "restaurant"
     @JoinColumn(name = "restaurant_id")
     @JsonIgnore
     private List<Dish> dishes;
