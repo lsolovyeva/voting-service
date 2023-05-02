@@ -7,7 +7,6 @@ import org.example.model.Dish;
 import org.example.model.Restaurant;
 import org.example.repository.DishRepository;
 import org.example.repository.RestaurantRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +44,6 @@ public class DishService {
     }
 
     @Transactional
-    @Modifying
     public boolean updateDish(Dish dish, Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
@@ -56,7 +54,6 @@ public class DishService {
     }
 
     @Transactional
-    @Modifying
     public boolean changeDishActivation(Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
@@ -65,7 +62,6 @@ public class DishService {
         return true;
     }
 
-    @Transactional
     public List<Dish> getAllDishes(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId).orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
         return restaurant.getDishes();
