@@ -24,7 +24,7 @@ public class VotingServiceApplication implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         userRepository.save(new User("guest@gmail.com", "User_First", "User_Last", "password", Set.of(USER)));
     }
 }
