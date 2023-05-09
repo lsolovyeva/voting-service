@@ -45,7 +45,7 @@ CREATE TABLE VOTE
 (
     user_id       BIGINT PRIMARY KEY,
     restaurant_id BIGINT   NOT NULL,
-    vote_date     DATETIME NULL,
+    vote_date     DATE NULL,
     CONSTRAINT user_unique_vote_date_idx UNIQUE (user_id, vote_date),
     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
     FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE

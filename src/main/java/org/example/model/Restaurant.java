@@ -10,20 +10,20 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "restaurant", schema = "votes", catalog = "voting")
 public class Restaurant extends BaseEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     @NotBlank
     @Size(min = 2, max = 50)
     private String name;
 
     //menu
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY) //mappedBy = "restaurant"
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     @JsonIgnore
     private List<Dish> dishes;

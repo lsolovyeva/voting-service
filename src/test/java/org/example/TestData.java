@@ -6,8 +6,11 @@ import org.example.dto.RestaurantRequest;
 import org.example.model.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
+
+import static java.time.LocalDate.now;
 
 public class TestData {
     public static final long USER_ID = 1;
@@ -27,7 +30,7 @@ public class TestData {
 
     public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), true);
     public static final Restaurant testRestaurant = new Restaurant("testRestaurantName", null);
-    public static final Vote testVote = new Vote(VOTE_ID, testUser, testRestaurant, new Date());
+    public static final Vote testVote = new Vote(VOTE_ID, testUser, testRestaurant, now());
 
     public static String asJsonString(final Object obj) {
         try {

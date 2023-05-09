@@ -10,8 +10,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
+import static java.time.LocalDate.now;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -26,6 +28,6 @@ public class VoteController {
     @ResponseStatus(CREATED)
     @Secured({"ROLE_USER"})
     public ResponseEntity<Vote> vote(@PathVariable(name = "restaurant_id") Long restaurantId, @AuthenticationPrincipal User authUser) {
-        return new ResponseEntity<>(voteService.processVote(authUser.getId(), restaurantId, new Date()), CREATED);
+        return new ResponseEntity<>(voteService.processVote(authUser.getId(), restaurantId, LocalDate.now(), LocalTime.now()), CREATED);
     }
 }

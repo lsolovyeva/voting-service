@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -43,24 +45,24 @@ class VoteServiceTest {
     @Test
     void processNewVote() {
         when(voteRepository.save(any())).thenReturn(testVote);
-        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, new Date()));
+        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, LocalDate.now(), LocalTime.now()));
     }
 
     @Test
     void processExistingVoteAndEligibleToChange() {
-        Date eligibleDate = new Date();
-        eligibleDate.setTime(1681970400000L); // 20/04/2023, 9:00
+        LocalTime eligibleTime = LocalTime.of(9, 0, 0, 0);
         when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
         when(voteRepository.save(any())).thenReturn(testVote);
-        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, eligibleDate));
+        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, LocalDate.now(), eligibleTime));
     }
 
     @Test
     void processExistingVoteAndNotEligibleToChange() {
-        Date notEligibleDate = new Date();
-        notEligibleDate.setTime(1682010000000L); // 20/04/2023, 20:00
+        LocalTime notEligibleDate = LocalTime.of(20, 0, 0, 0);
+        LocalDate voteDate = LocalDate.now();
         when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
-        assertThrows(UnsupportedOperationException.class, () -> voteService.processVote(USER_ID, RESTAURANT_ID, notEligibleDate));
+        assertThrows(UnsupportedOperationException.class,
+                () -> voteService.processVote(USER_ID, RESTAURANT_ID, voteDate, notEligibleDate));
     }
 
     @Test

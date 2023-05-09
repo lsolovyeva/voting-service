@@ -35,11 +35,10 @@ public class DishService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
         if (restaurantRepository.findByRestaurantIdAndDishName(restaurantId, dish.getName()).isPresent()) {
-            throw new UnsupportedOperationException("Unable to add dish=" + dish.getName() + " to restaurant id=" + restaurantId +
-                    " : dish already exist.");
+            throw new UnsupportedOperationException("Unable to add dish=" + dish.getName() + " to restaurant id=" +
+                    restaurantId + " : dish already exist.");
         }
 
-        dish.setEnabled(true);
         Dish newDish = dishRepository.save(dish);
         if (restaurant.getDishes() == null) {
             restaurant.setDishes(new ArrayList<>());
@@ -71,7 +70,8 @@ public class DishService {
 
     @Cacheable(value = DISHES_CACHE)
     public List<Dish> getAllDishes(Long restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId).orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
+        Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
         return restaurant.getDishes();
     }
 }

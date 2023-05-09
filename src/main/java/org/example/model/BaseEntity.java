@@ -20,9 +20,9 @@ public abstract class BaseEntity implements Persistable<Long> {
     protected Long id;
 
     // doesn't work for hibernate lazy proxy
-    public int id() {
+    public long id() {
         Assert.notNull(id, "Entity must have id");
-        return Math.toIntExact(id);
+        return id;
     }
 
     @Override

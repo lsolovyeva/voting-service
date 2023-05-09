@@ -25,7 +25,7 @@ public class DishController {
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Dish> create(@Valid @RequestBody DishRequest dishRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
-        Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
+        Dish dish = new Dish(dishRequest.getName(), dishRequest.getPrice(), true);
         return new ResponseEntity<>(dishService.addNewDish(dish, restaurantId), CREATED);
     }
 
@@ -34,7 +34,7 @@ public class DishController {
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
     public void update(@Valid @RequestBody DishRequest dishRequest, @PathVariable(name = "dish_id") Long dishId) {
-        Dish dish = Dish.builder().name(dishRequest.getName()).price(dishRequest.getPrice()).build();
+        Dish dish = new Dish(dishRequest.getName(), dishRequest.getPrice(), true);
         dishService.updateDish(dish, dishId);
     }
 

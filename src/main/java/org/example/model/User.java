@@ -32,15 +32,15 @@ public class User extends BaseEntity implements Serializable, UserDetails {
     @Size(max = 128)
     private String email;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     @Size(max = 128)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     @Size(max = 128)
     private String lastName;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     @Size(max = 256)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     //@JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)

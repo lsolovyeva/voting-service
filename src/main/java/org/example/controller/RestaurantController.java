@@ -25,7 +25,7 @@ public class RestaurantController {
     @ResponseStatus(CREATED)
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Restaurant> create(@Valid @RequestBody RestaurantRequest restaurantRequest) {
-        Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
+        Restaurant restaurant = new Restaurant(restaurantRequest.getName(), null);
         return new ResponseEntity<>(restaurantService.save(restaurant), CREATED);
     }
 
@@ -34,7 +34,7 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.OK)
     @Secured({"ROLE_ADMIN"})
     public void update(@Valid @RequestBody RestaurantRequest restaurantRequest, @PathVariable(name = "restaurant_id") Long restaurantId) {
-        Restaurant restaurant = Restaurant.builder().name(restaurantRequest.getName()).build();
+        Restaurant restaurant = new Restaurant(restaurantRequest.getName(), null);
         restaurantService.update(restaurant, restaurantId);
     }
 }

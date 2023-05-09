@@ -3,6 +3,7 @@ package org.example.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -11,10 +12,11 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "dish", schema = "votes", catalog = "voting")
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "dish", schema = "votes", catalog = "voting",
+        uniqueConstraints = {@UniqueConstraint(name = "restaurant_unique_dish_idx", columnNames = {"restaurant_id", "name"})})
 public class Dish extends BaseEntity {
 
     @Column(name = "name", nullable = false)
