@@ -6,9 +6,8 @@ import org.example.dto.RestaurantRequest;
 import org.example.model.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 
 import static java.time.LocalDate.now;
 
@@ -28,7 +27,7 @@ public class TestData {
     public static final DishRequest dishRequest = new DishRequest("pizza", new BigDecimal("50.5"));
     public static final RestaurantRequest restaurantRequest = new RestaurantRequest("testRestaurantName");
 
-    public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), true);
+    public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), LocalDateTime.now());
     public static final Restaurant testRestaurant = new Restaurant("testRestaurantName", null);
     public static final Vote testVote = new Vote(VOTE_ID, testUser, testRestaurant, now());
 

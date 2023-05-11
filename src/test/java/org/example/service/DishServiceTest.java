@@ -73,10 +73,4 @@ class DishServiceTest {
         when(dishRepository.findById(any())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> dishService.updateDish(testDish, DISH_ID));
     }
-
-    @Test
-    void deactivateDish() {
-        when(dishRepository.findById(any())).thenReturn(Optional.of(testDish));
-        assertTrue(dishService.changeDishActivation(DISH_ID));
-    }
 }

@@ -49,7 +49,7 @@ class RestaurantControllerTestIT {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void notCreateDishWhenNotAdmin() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants/new")
+        mvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andExpect(status().isForbidden());
@@ -57,13 +57,13 @@ class RestaurantControllerTestIT {
 
     @Test
     void notVoteWhenUnauthorized() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post("/api/user/vote/1"))
+        mvc.perform(MockMvcRequestBuilders.post("/api/user/votes?restaurantId=1"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void notCreateDishWhenUnauthorized() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post("/api/admin/menu/add/1")
+        mvc.perform(MockMvcRequestBuilders.post("/api/admin/dishes?restaurantId=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(dishRequest)))
                 .andExpect(status().isUnauthorized());

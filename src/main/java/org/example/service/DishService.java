@@ -2,7 +2,6 @@ package org.example.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.example.model.Dish;
 import org.example.model.Restaurant;
 import org.example.repository.DishRepository;
@@ -12,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,20 +59,17 @@ public class DishService {
         return true;
     }
 
-    @Transactional
-    @CacheEvict(value = DISHES_CACHE, allEntries = true)
-    public boolean changeDishActivation(Long dishId) {
-        Dish existingDish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
-        existingDish.setEnabled(BooleanUtils.negate(existingDish.isEnabled()));
-        dishRepository.save(existingDish);
-        return true;
+    @Cacheable(value = DISHES_CACHE)
+    public List<Dish> getAllDishesForToday(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findByIdWithDishesForToday(restaurantId,
+                        LocalDate.now().atTime(LocalTime.MIDNIGHT), LocalDate.now().atTime(LocalTime.MAX))
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " and menu not found."));
+        return restaurant.getDishes();
     }
 
-    @Cacheable(value = DISHES_CACHE)
     public List<Dish> getAllDishes(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " and menu not found."));
         return restaurant.getDishes();
     }
 }

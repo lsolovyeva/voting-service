@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @Slf4j
 @Service
@@ -31,29 +29,50 @@ public class VoteService {
     }
 
     @Transactional
-    public Vote processVote(Long userId, Long restaurantId, LocalDate newVoteDate, LocalTime newVoteTime) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User with id=" + userId + " not found."));
+    public Vote addVote(Long userId, Long restaurantId, LocalDate newVoteDate) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
         Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
 
-        if (vote == null) {
-            vote = new Vote();
-            vote.setUser(user);
-            vote.setRestaurant(restaurant);
-            vote.setVoteDate(newVoteDate);
-            return voteRepository.save(vote);
+        if (vote != null) {
+            log.info("Error: cannot create vote as it already exists");
+            return null;
         }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id=" + userId + " not found."));
+        vote = new Vote();
+        vote.setUser(user);
+        vote.setRestaurant(restaurant);
+        vote.setVoteDate(newVoteDate);
+        return voteRepository.save(vote);
+    }
+
+    @Transactional
+    public void updateVote(Long userId, Long restaurantId, LocalDate newVoteDate, LocalTime newVoteTime) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
+        Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+        if (vote == null) {
+            log.info("Error: cannot update vote as it does not exist");
+            return;
+        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with id=" + userId + " not found."));
         if (isEligibleToChange(newVoteTime)) {
             vote.setUser(user);
             vote.setRestaurant(restaurant);
             vote.setVoteDate(newVoteDate);
-            return voteRepository.save(vote);
+            voteRepository.save(vote);
         } else {
             throw new UnsupportedOperationException("Unable to process vote for user id=" + userId +
                     " and restaurant id=" + restaurantId + " : voting period has been closed.");
         }
+    }
+
+    public Vote getVoteForToday(Long userId) {
+        return voteRepository.findByUserIdForToday(userId, LocalDate.now().atTime(LocalTime.MIDNIGHT), LocalDate.now().atTime(LocalTime.MAX))
+                .orElseThrow(() -> new EntityNotFoundException("Vote for user with id=" + userId + " not found."));
+
     }
 
     public Integer getVotesCount(Long restaurantId) {

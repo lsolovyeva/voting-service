@@ -16,7 +16,7 @@ class VoteControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void vote() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/vote/1"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/votes?restaurantId=1"))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -28,7 +28,7 @@ class VoteControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getForbidden() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/vote/1")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/votes?restaurantId=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())

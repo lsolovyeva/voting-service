@@ -1,26 +1,26 @@
 -- USE VOTES;
 
-INSERT INTO USERS (email, first_name, last_name, password)
+INSERT INTO users (email, first_name, last_name, password)
 VALUES ('user@gmail.com', 'User', 'First', '{noop}password'),
        ('admin@gmail.com', 'Admin', 'Second', '{noop}admin'),
        ('newuser@gmail.com', 'User', 'Third', '{noop}newpassword');
 
-INSERT INTO USER_ROLE (role, user_id)
+INSERT INTO user_role (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 3);
 
-INSERT INTO RESTAURANT(name)
+INSERT INTO restaurant(name)
 VALUES ('London Paradise'),
        ('Moscow Night');
 
-INSERT INTO DISH (name, price, restaurant_id)
-VALUES ('Pizza', 100.00, 1),
-       ('Cake', 50.90, 1),
-       ('Tea', 10.55, 2),
-       ('Lasagna', 159.20, 2);
+INSERT INTO dish (name, price, create_date, restaurant_id)
+VALUES ('Pizza', 100.00, now(), 1),
+       ('Cake', 50.90, now(), 1),
+       ('Tea', 10.55, now(), 2),
+       ('Lasagna', 159.20, now(), 2);
 
 -- vote_id=user_id
-INSERT INTO VOTE (user_id, restaurant_id, vote_date)
+INSERT INTO vote (user_id, restaurant_id, vote_date)
 VALUES (2, 1, now()),
        (3, 2, now());

@@ -1,13 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS VOTES;
 USE VOTES;
 
-DROP TABLE IF EXISTS USER_ROLE;
-DROP TABLE IF EXISTS DISH;
-DROP TABLE IF EXISTS VOTE;
-DROP TABLE IF EXISTS RESTAURANT;
-DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS dish;
+DROP TABLE IF EXISTS vote;
+DROP TABLE IF EXISTS restaurant;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE USERS
+CREATE TABLE users
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     email      VARCHAR(255) NOT NULL UNIQUE,
@@ -16,37 +16,37 @@ CREATE TABLE USERS
     password   VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE USER_ROLE
+CREATE TABLE user_role
 (
     user_id BIGINT       NOT NULL,
     role    VARCHAR(255) NOT NULL,
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
-    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE RESTAURANT
+CREATE TABLE restaurant
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE DISH
+CREATE TABLE dish
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     name          VARCHAR(120)   NOT NULL,
     price         DECIMAL(15, 2) NOT NULL,
-    enabled       BOOLEAN DEFAULT TRUE,
-    restaurant_id BIGINT         NULL,
+    create_date   DATETIME       NOT NULL,
+    restaurant_id BIGINT         NULL, -- to handle unidirectional relationship separately
     CONSTRAINT restaurant_unique_dish_idx UNIQUE (restaurant_id, name),
-    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 
-CREATE TABLE VOTE
+CREATE TABLE vote
 (
     user_id       BIGINT PRIMARY KEY,
-    restaurant_id BIGINT   NOT NULL,
-    vote_date     DATE NULL,
+    restaurant_id BIGINT NOT NULL,
+    vote_date     DATE   NOT NULL,
     CONSTRAINT user_unique_vote_date_idx UNIQUE (user_id, vote_date),
-    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE,
-    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT (id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );

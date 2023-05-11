@@ -19,7 +19,7 @@ class RestaurantControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createRestaurant() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants/new")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())
@@ -32,7 +32,7 @@ class RestaurantControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getForbidden() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants/new")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())
@@ -44,11 +44,11 @@ class RestaurantControllerTest extends MockMvcControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void updateRestaurant() throws Exception {
         RestaurantRequest restaurantRequest = new RestaurantRequest("newRestaurantName");
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/admin/restaurants/update/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/admin/restaurants/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string(""))
                 .andReturn();
     }

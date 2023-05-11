@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.example.TestData.*;
@@ -45,7 +44,7 @@ class VoteServiceTest {
     @Test
     void processNewVote() {
         when(voteRepository.save(any())).thenReturn(testVote);
-        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, LocalDate.now(), LocalTime.now()));
+        assertNotNull(voteService.addVote(USER_ID, RESTAURANT_ID, LocalDate.now()));
     }
 
     @Test
@@ -53,7 +52,7 @@ class VoteServiceTest {
         LocalTime eligibleTime = LocalTime.of(9, 0, 0, 0);
         when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
         when(voteRepository.save(any())).thenReturn(testVote);
-        assertNotNull(voteService.processVote(USER_ID, RESTAURANT_ID, LocalDate.now(), eligibleTime));
+        assertDoesNotThrow(() -> voteService.updateVote(USER_ID, RESTAURANT_ID, LocalDate.now(), eligibleTime));
     }
 
     @Test
@@ -62,7 +61,7 @@ class VoteServiceTest {
         LocalDate voteDate = LocalDate.now();
         when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
         assertThrows(UnsupportedOperationException.class,
-                () -> voteService.processVote(USER_ID, RESTAURANT_ID, voteDate, notEligibleDate));
+                () -> voteService.updateVote(USER_ID, RESTAURANT_ID, voteDate, notEligibleDate));
     }
 
     @Test

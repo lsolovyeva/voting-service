@@ -8,17 +8,14 @@ import org.example.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping("/api/view")
+@RequestMapping("/api")
 public class RootController {
 
     @Autowired
@@ -40,10 +37,14 @@ public class RootController {
         return "Error: Access denied!";
     }
 
+    @GetMapping("/dishes/active")
+    public List<Dish> getAllDishesForToday(@RequestParam Long restaurantId) {
+        return dishService.getAllDishesForToday(restaurantId);
+    }
 
-    @GetMapping("/menu/{restaurant_id}")
-    public List<Dish> getAllDishesFor(@PathVariable(name = "restaurant_id") Long restaurantId) {
-        return dishService.getAllDishes(restaurantId); // TODO: count only active
+    @GetMapping("/dishes")
+    public List<Dish> getAllDishes(@RequestParam Long restaurantId) {
+        return dishService.getAllDishes(restaurantId);
     }
 
     @GetMapping("/restaurants")
@@ -51,8 +52,8 @@ public class RootController {
         return restaurantService.getAll();
     }
 
-    @GetMapping("/votes/{restaurant_id}")
-    public ResponseEntity<Integer> getAllVotesFor(@PathVariable(name = "restaurant_id") Long restaurantId) {
+    @GetMapping("/votes")
+    public ResponseEntity<Integer> getAllVotesFor(@RequestParam Long restaurantId) {
         Integer votes = voteService.getVotesCount(restaurantId);
         return new ResponseEntity<>(votes, HttpStatus.OK);
     }

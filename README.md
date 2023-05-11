@@ -19,16 +19,16 @@ Basic Auth for the user: `user@gmail.com / password` <br>
 Basic Auth for the admin: `admin@gmail.com / admin`
 
 1) Add new restaurant if admin
-   - POST http://localhost:8080/api/admin/restaurants/new
+   - POST http://localhost:8080/api/admin/restaurants
    - RequestBody `{ "name": "newRestaurant" }`
 
 2) Update restaurant if admin
-   - PUT http://localhost:8080/api/admin/restaurants/update/{restaurant_id}
+   - PUT http://localhost:8080/api/admin/restaurants/{restaurant_id}
    - RequestParam: restaurant_id=1
    - RequestBody `{ "name": "updatedRestaurant" }`
 
 3) Add new dish to the specified restaurant if admin 
-   - POST http://localhost:8080/api/admin/menus/add/{restaurant_id}
+   - POST http://localhost:8080/api/admin/dishes?{restaurant_id}
    - RequestParams: restaurant_id=1
    - RequestBody : `{    
     "name": "newTea",
@@ -36,30 +36,26 @@ Basic Auth for the admin: `admin@gmail.com / admin`
     }`
 
 4) Update dish of the specified restaurant if admin
-   - PUT http://localhost:8080/api/admin/menus/update/{dish_id}
+   - PUT http://localhost:8080/api/admin/dishes/{dish_id}
    - RequestParams: dish_id=4
    - RequestBody : `{    
      "name": "dish4",
      "price": 44
      }`
-   
-5) Disable (not remove for audit) the specified dish if admin
-   - PUT http://localhost:8080/api/admin/menus/disable/{dish_id}
-   - RequestParams: dish_id=3
 
-6) Vote for the specified restaurant if user
-   - POST http://localhost:8080/api/user/vote/{restaurant_id}
+5) Vote for the specified restaurant if user
+   - POST http://localhost:8080/api/user/votes?{restaurant_id}
    - RequestParams: restaurant_id=1
 
-7) Get all dishes for the specified restaurant if guest
-   - GET http://localhost:8080/api/view/menu/{restaurant_id}
+6) Get all dishes for the specified restaurant if guest
+   - GET http://localhost:8080/api/dishes?{restaurant_id}
    - RequestParams: restaurant_id=1
 
-8) Get all restaurants if guest
-   - GET http://localhost:8080/api/view/menu/restaurants
+7) Get all restaurants if guest
+   - GET http://localhost:8080/api/restaurants
 
-9) Get number of votes for the specified restaurant if guest
-   - GET http://localhost:8080/api/view/menu/votes/{restaurant_id}
+8) Get number of votes for the specified restaurant if guest
+   - GET http://localhost:8080/api/votes?{restaurant_id}
    - RequestParams: restaurant_id=1
 
 #### Access H2 console to view DB

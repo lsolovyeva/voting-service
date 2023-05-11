@@ -18,7 +18,7 @@ class DishControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createDish() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/menus/add/1")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/dishes?restaurantId=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(dishRequest)))
                 .andDo(print())
@@ -33,23 +33,11 @@ class DishControllerTest extends MockMvcControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void updateDish() throws Exception {
         DishRequest dishRequest = new DishRequest("newPizza", new BigDecimal("100"));
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/admin/menus/update/1")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/admin/dishes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(dishRequest)))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(""))
-                .andReturn();
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void removeDish() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/admin/menus/disable/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(dishRequest)))
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string(""))
                 .andReturn();
     }

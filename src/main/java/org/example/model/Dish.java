@@ -5,10 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -28,7 +31,8 @@ public class Dish extends BaseEntity {
     //@Range(min = 1, max = 1000)
     private BigDecimal price;
 
-    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
-    private boolean enabled;
+    @Column(name = "create_date", nullable = false)
+    @NotNull
+    private LocalDateTime createDate;
 
 }

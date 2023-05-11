@@ -16,18 +16,18 @@ public class RootControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAllDishes() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/view/menu/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes?restaurantId=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":1,\"name\":\"Pizza\",\"price\":100.00,\"enabled\":true,\"new\":false},{\"id\":2,\"name\":\"Cake\",\"price\":50.90,\"enabled\":true,\"new\":false}]"))
+                .andExpect(content().json("[{\"id\":1,\"name\":\"Pizza\",\"price\":100.00,\"new\":false},{\"id\":2,\"name\":\"Cake\",\"price\":50.90,\"new\":false}]"))
                 .andReturn();
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getAllRestaurantsWhenAdmin() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/view/restaurants"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/restaurants"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -39,7 +39,7 @@ public class RootControllerTest extends MockMvcControllerTest {
     @WithUserDetails(value = USER_MAIL)
         // TODO: parameterize user/admin/noAuth
     void getAllRestaurantsWhenUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/view/restaurants"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/restaurants"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -50,7 +50,7 @@ public class RootControllerTest extends MockMvcControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getVotesCount() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/view/votes/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/votes?restaurantId=1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
