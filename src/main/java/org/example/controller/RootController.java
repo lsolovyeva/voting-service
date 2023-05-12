@@ -7,15 +7,17 @@ import org.example.service.RestaurantService;
 import org.example.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootController {
 
     @Autowired
@@ -30,11 +32,6 @@ public class RootController {
     @GetMapping
     public String index() {
         return "Welcome to the Restaurant Voting Application!";
-    }
-
-    @RequestMapping(value = "/403", method = {GET, POST, PUT, DELETE})
-    public String accessDenied() {
-        return "Error: Access denied!";
     }
 
     @GetMapping("/dishes/active")

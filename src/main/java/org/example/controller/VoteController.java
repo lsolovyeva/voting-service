@@ -27,7 +27,7 @@ public class VoteController {
     private VoteService voteService;
 
     //add vote for a restaurant
-    @PostMapping()
+    @PostMapping
     @Secured({"ROLE_USER"})
     public ResponseEntity<Vote> create(@RequestParam Long restaurantId, @AuthenticationPrincipal User authUser) {
         Vote newVote = voteService.addVote(authUser.getId(), restaurantId, LocalDate.now());
@@ -38,14 +38,14 @@ public class VoteController {
     }
 
     //change vote for a restaurant
-    @PutMapping()
+    @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured({"ROLE_USER"})
     public void update(@RequestParam Long restaurantId, @AuthenticationPrincipal User authUser) {
         voteService.updateVote(authUser.getId(), restaurantId, LocalDate.now(), LocalTime.now());
     }
 
-    @GetMapping()
+    @GetMapping
     public Vote getVoteForToday(@AuthenticationPrincipal User authUser) {
         return voteService.getVoteForToday(authUser.getId());
     }

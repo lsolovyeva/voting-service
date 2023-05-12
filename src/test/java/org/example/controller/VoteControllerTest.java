@@ -2,9 +2,11 @@ package org.example.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.example.TestData.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,13 +29,11 @@ class VoteControllerTest extends MockMvcControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void getForbidden() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/votes?restaurantId=1")
+    void getForbidden() {
+        assertThatThrownBy(() -> mockMvc.perform(MockMvcRequestBuilders.post("/api/user/votes?restaurantId=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Error: access denied."))
-                .andReturn();
+                .andExpect(status().isForbidden())).hasCause(new AccessDeniedException("Access Denied"));
     }
 }

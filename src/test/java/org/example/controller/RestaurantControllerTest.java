@@ -5,9 +5,11 @@ import org.example.dto.RestaurantRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.example.TestData.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,13 +33,12 @@ class RestaurantControllerTest extends MockMvcControllerTest {
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void getForbidden() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants")
+    void getForbidden() {
+        assertThatThrownBy(() -> mockMvc.perform(MockMvcRequestBuilders.post("/api/admin/restaurants")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(restaurantRequest)))
                 .andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Error: access denied."));
+                .andExpect(status().isForbidden())).hasCause(new AccessDeniedException("Access Denied"));
     }
 
     @Test

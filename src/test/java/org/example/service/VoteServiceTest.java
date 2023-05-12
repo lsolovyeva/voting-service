@@ -50,7 +50,7 @@ class VoteServiceTest {
     @Test
     void processExistingVoteAndEligibleToChange() {
         LocalTime eligibleTime = LocalTime.of(9, 0, 0, 0);
-        when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
+        when(voteRepository.findByUserId(USER_ID)).thenReturn(testVote);
         when(voteRepository.save(any())).thenReturn(testVote);
         assertDoesNotThrow(() -> voteService.updateVote(USER_ID, RESTAURANT_ID, LocalDate.now(), eligibleTime));
     }
@@ -59,7 +59,7 @@ class VoteServiceTest {
     void processExistingVoteAndNotEligibleToChange() {
         LocalTime notEligibleDate = LocalTime.of(20, 0, 0, 0);
         LocalDate voteDate = LocalDate.now();
-        when(voteRepository.findByUserIdAndRestaurantId(USER_ID, RESTAURANT_ID)).thenReturn(testVote);
+        when(voteRepository.findByUserId(USER_ID)).thenReturn(testVote);
         assertThrows(UnsupportedOperationException.class,
                 () -> voteService.updateVote(USER_ID, RESTAURANT_ID, voteDate, notEligibleDate));
     }

@@ -1,16 +1,14 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:voting;TRACE_LEVEL_FILE=4;
-    #url: jdbc:h2:mem:voting;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS voting;
-    #tcp: jdbc:h2:tcp://localhost:9092/mem:voting;OLD_INFORMATION_SCHEMA=TRUE
+    url: jdbc:h2:mem:voting;INIT=CREATE SCHEMA IF NOT EXISTS votes;TRACE_LEVEL_FILE=3;
     username: sa
     password:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: none # not to ignore data.sql #TODO: change to create
+      ddl-auto: create
     show-sql: true
     open-in-view: false
     properties:
@@ -18,7 +16,6 @@ spring:
         format_sql: true
         default_batch_fetch_size: 20
         jdbc.batch_size: 20
-
   h2:
     console:
       enabled: true

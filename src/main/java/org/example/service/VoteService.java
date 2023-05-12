@@ -32,8 +32,8 @@ public class VoteService {
     public Vote addVote(Long userId, Long restaurantId, LocalDate newVoteDate) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
-        Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
 
+        Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
         if (vote != null) {
             log.info("Error: cannot create vote as it already exists");
             return null;
@@ -51,7 +51,7 @@ public class VoteService {
     public void updateVote(Long userId, Long restaurantId, LocalDate newVoteDate, LocalTime newVoteTime) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
-        Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+        Vote vote = voteRepository.findByUserId(userId);
         if (vote == null) {
             log.info("Error: cannot update vote as it does not exist");
             return;
@@ -70,9 +70,8 @@ public class VoteService {
     }
 
     public Vote getVoteForToday(Long userId) {
-        return voteRepository.findByUserIdForToday(userId, LocalDate.now().atTime(LocalTime.MIDNIGHT), LocalDate.now().atTime(LocalTime.MAX))
+        return voteRepository.findByUserIdForToday(userId, LocalDate.now())
                 .orElseThrow(() -> new EntityNotFoundException("Vote for user with id=" + userId + " not found."));
-
     }
 
     public Integer getVotesCount(Long restaurantId) {
