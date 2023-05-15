@@ -21,13 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class RestaurantControllerTestIT {
 
+    protected MockMvc mvc;
+
     @Autowired
     private WebApplicationContext ctx;
 
     @MockBean
     private CacheManager cacheManager;
-
-    protected MockMvc mvc;
 
     @MockBean
     private AppConfig appConfig; // not to run AppConfig twice

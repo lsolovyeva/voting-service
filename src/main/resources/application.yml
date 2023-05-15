@@ -32,4 +32,4 @@ logging:
         transaction: DEBUG
 
     root: WARN
-    org.example: DEBUG
+    com.github.lsolovyeva.voting: DEBUG

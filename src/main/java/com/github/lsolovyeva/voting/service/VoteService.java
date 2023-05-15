@@ -34,8 +34,7 @@ public class VoteService {
 
         Vote vote = voteRepository.findByUserIdAndRestaurantIdForToday(userId, restaurantId, LocalDate.now());
         if (vote != null) {
-            log.info("Error: cannot create vote for today as it already exists");
-            return null;
+            throw new ItemMappingException("Error: cannot create vote for today as it already exists");
         }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User with id=" + userId + " not found."));

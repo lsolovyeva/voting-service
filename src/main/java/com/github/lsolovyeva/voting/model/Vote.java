@@ -1,6 +1,7 @@
 package com.github.lsolovyeva.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "vote", schema = "votes", catalog = "voting",
         uniqueConstraints = {@UniqueConstraint(name = "user_unique_vote_date_idx", columnNames = {"user_id", "vote_date"})})
-public class Vote extends BaseEntity{
+public class Vote extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -26,7 +27,7 @@ public class Vote extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-    @JsonIgnore
+    @JsonIncludeProperties(value = {"id"})
     private Restaurant restaurant;
 
     @Column(name = "vote_date", nullable = false)

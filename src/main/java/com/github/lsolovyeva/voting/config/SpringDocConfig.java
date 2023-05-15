@@ -18,7 +18,7 @@ public class SpringDocConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("voting-public")
-                .packagesToScan("org.example.controller")
+                .packagesToScan("com.github.lsolovyeva.voting.controller")
                 .pathsToMatch("/api/**")
                 .build();
     }

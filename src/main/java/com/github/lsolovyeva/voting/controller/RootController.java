@@ -25,11 +25,6 @@ public class RootController {
     private final RestaurantService restaurantService;
     private final VoteService voteService;
 
-    @GetMapping
-    public String index() {
-        return "Welcome to the Restaurant Voting Application!";
-    }
-
     @GetMapping("/dishes/active")
     public List<Dish> getAllDishesForToday(@RequestParam Long restaurantId) {
         return dishService.getAllForToday(restaurantId);

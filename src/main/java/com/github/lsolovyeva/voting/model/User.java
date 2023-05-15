@@ -10,7 +10,6 @@ import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -65,14 +64,6 @@ public class User extends BaseEntity implements Serializable, UserDetails {
         this.lastName = lastName;
         this.password = password;
         this.roles = roles;
-    }
-
-    public void setEmail(String email) {
-        this.email = StringUtils.hasText(email) ? email.toLowerCase() : null;
-    }
-
-    public boolean hasRole(Role role) {
-        return roles != null && roles.contains(role);
     }
 
     @Override

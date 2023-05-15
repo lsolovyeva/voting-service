@@ -35,7 +35,8 @@ public class CacheTest {
     @Test
     void getCachedRestaurants() {
         restaurantService.getAll();
-        ArrayList<Restaurant> cachedItems = (ArrayList<Restaurant>) cacheManager.getCache(AppConfig.RESTAURANTS_CACHE).get(SimpleKey.EMPTY).get();
+        ArrayList<Restaurant> cachedItems = (ArrayList<Restaurant>) cacheManager.getCache(AppConfig.RESTAURANTS_CACHE)
+                .get(SimpleKey.EMPTY).get();
         assertEquals(2, cachedItems.size());
     }
 }

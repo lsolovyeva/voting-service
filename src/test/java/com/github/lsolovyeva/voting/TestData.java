@@ -16,7 +16,6 @@ public class TestData {
     public static final long ADMIN_ID = 2;
     public static final long RESTAURANT_ID = 1;
     public static final long DISH_ID = 1;
-    public static final long VOTE_ID = 1;
 
     public static final String USER_MAIL = "user@gmail.com";
     public static final String ADMIN_MAIL = "admin@gmail.com";

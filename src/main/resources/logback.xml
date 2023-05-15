@@ -20,7 +20,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.example" level="debug"/>
+    <logger name="com.github.lsolovyeva.voting" level="debug"/>
 
     <root level="info">
         <appender-ref ref="file"/>

@@ -28,7 +28,7 @@ public class DishService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition="#dish.restaurant!=null")
+    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition = "#dish.restaurant!=null")
     public Dish add(Dish dish, Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
@@ -47,7 +47,7 @@ public class DishService {
     }
 
     @Transactional
-    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition="#dish.restaurant!=null")
+    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition = "#dish.restaurant!=null")
     public void update(Dish dish, Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
