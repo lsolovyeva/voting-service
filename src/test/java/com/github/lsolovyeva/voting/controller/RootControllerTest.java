@@ -24,6 +24,17 @@ public class RootControllerTest extends MockMvcControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = TestData.USER_MAIL)
+    void getAllDishesForToday() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/dishes/active?restaurantId=1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"id\":1,\"name\":\"Pizza\",\"price\":100.00,\"new\":false},{\"id\":2,\"name\":\"Cake\",\"price\":50.90,\"new\":false}]"))
+                .andReturn();
+    }
+
+    @Test
     @WithUserDetails(value = TestData.ADMIN_MAIL)
     void getAllRestaurantsWhenAdmin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/restaurants"))

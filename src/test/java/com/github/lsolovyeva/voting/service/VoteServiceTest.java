@@ -1,6 +1,7 @@
 package com.github.lsolovyeva.voting.service;
 
 import com.github.lsolovyeva.voting.TestData;
+import com.github.lsolovyeva.voting.exception.ItemMappingException;
 import jakarta.persistence.EntityNotFoundException;
 import com.github.lsolovyeva.voting.repository.RestaurantRepository;
 import com.github.lsolovyeva.voting.repository.UserRepository;
@@ -60,7 +61,7 @@ class VoteServiceTest {
         LocalTime notEligibleDate = LocalTime.of(20, 0, 0, 0);
         LocalDate voteDate = LocalDate.now();
         when(voteRepository.findByUserId(TestData.USER_ID)).thenReturn(TestData.testVote);
-        assertThrows(UnsupportedOperationException.class,
+        assertThrows(ItemMappingException.class,
                 () -> voteService.updateVote(TestData.USER_ID, TestData.RESTAURANT_ID, voteDate, notEligibleDate));
     }
 

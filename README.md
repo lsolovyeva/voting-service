@@ -75,4 +75,4 @@ https://app.quickdatabasediagrams.com/ <br>
 #### Notes
 - *ServiceImpl classes are omitted for simplicity
 - Catalog=DB=VOTING, Schema=namespace=VOTES
-- Test coverage report: 95% classes and 80% lines covered 
+- Test coverage report: 100% classes and 80% lines covered

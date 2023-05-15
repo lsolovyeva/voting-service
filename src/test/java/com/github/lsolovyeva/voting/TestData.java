@@ -27,9 +27,9 @@ public class TestData {
     public static final DishRequest dishRequest = new DishRequest("pizza", new BigDecimal("50.5"));
     public static final RestaurantRequest restaurantRequest = new RestaurantRequest("testRestaurantName");
 
-    public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), LocalDateTime.now());
+    public static final Dish testDish = new Dish("testDish", new BigDecimal("50.5"), LocalDateTime.now(), null);
     public static final Restaurant testRestaurant = new Restaurant("testRestaurantName", null);
-    public static final Vote testVote = new Vote(VOTE_ID, testUser, testRestaurant, now());
+    public static final Vote testVote = new Vote(testUser, testRestaurant, now());
 
     public static String asJsonString(final Object obj) {
         try {

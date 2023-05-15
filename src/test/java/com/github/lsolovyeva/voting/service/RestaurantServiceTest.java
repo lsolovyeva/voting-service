@@ -38,7 +38,7 @@ class RestaurantServiceTest {
     void update() {
         when(restaurantRepository.findById(any())).thenReturn(Optional.of(TestData.testRestaurant));
         TestData.testRestaurant.setName("newRestaurantName");
-        assertTrue(restaurantService.update(TestData.testRestaurant, TestData.RESTAURANT_ID));
+        assertDoesNotThrow(() -> restaurantService.update(TestData.testRestaurant, TestData.RESTAURANT_ID));
     }
 
     @Test

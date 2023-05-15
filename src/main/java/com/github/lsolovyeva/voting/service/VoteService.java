@@ -1,5 +1,6 @@
 package com.github.lsolovyeva.voting.service;
 
+import com.github.lsolovyeva.voting.exception.ItemMappingException;
 import com.github.lsolovyeva.voting.model.Restaurant;
 import com.github.lsolovyeva.voting.model.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,6 +21,8 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class VoteService {
 
+    private static final LocalTime ELIGIBLE_TIME_MAX = LocalTime.of(11, 0);
+
     private final RestaurantRepository restaurantRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
@@ -29,9 +32,9 @@ public class VoteService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
 
-        Vote vote = voteRepository.findByUserIdAndRestaurantId(userId, restaurantId);
+        Vote vote = voteRepository.findByUserIdAndRestaurantIdForToday(userId, restaurantId, LocalDate.now());
         if (vote != null) {
-            log.info("Error: cannot create vote as it already exists");
+            log.info("Error: cannot create vote for today as it already exists");
             return null;
         }
         User user = userRepository.findById(userId)
@@ -60,7 +63,7 @@ public class VoteService {
             vote.setVoteDate(newVoteDate);
             voteRepository.save(vote);
         } else {
-            throw new UnsupportedOperationException("Unable to process vote for user id=" + userId +
+            throw new ItemMappingException("Unable to process vote for user id=" + userId +
                     " and restaurant id=" + restaurantId + " : voting period has been closed.");
         }
     }
@@ -78,7 +81,6 @@ public class VoteService {
     }
 
     private static boolean isEligibleToChange(LocalTime newVoteDate) {
-        LocalTime compareTime = LocalTime.of(11, 0);
-        return newVoteDate.isBefore(compareTime);
+        return newVoteDate.isBefore(ELIGIBLE_TIME_MAX);
     }
 }

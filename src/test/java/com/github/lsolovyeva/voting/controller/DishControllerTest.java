@@ -26,7 +26,6 @@ class DishControllerTest extends MockMvcControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("{\"id\":5,\"name\":\"pizza\",\"price\":50.5,\"new\":false}"))
                 .andReturn();
-
     }
 
     @Test

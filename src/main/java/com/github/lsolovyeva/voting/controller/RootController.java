@@ -32,12 +32,12 @@ public class RootController {
 
     @GetMapping("/dishes/active")
     public List<Dish> getAllDishesForToday(@RequestParam Long restaurantId) {
-        return dishService.getAllDishesForToday(restaurantId);
+        return dishService.getAllForToday(restaurantId);
     }
 
     @GetMapping("/dishes")
     public List<Dish> getAllDishes(@RequestParam Long restaurantId) {
-        return dishService.getAllDishes(restaurantId);
+        return dishService.getAll(restaurantId);
     }
 
     @GetMapping("/restaurants")

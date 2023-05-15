@@ -28,8 +28,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return createErrorResponse("Error: data integrity is not preserved.", e, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UnsupportedOperationException.class)
-    public ResponseEntity<ErrorMessage> unsupportedOperationError(HttpServletRequest req, UnsupportedOperationException e) {
+    @ExceptionHandler(ItemMappingException.class)
+    public ResponseEntity<ErrorMessage> unsupportedOperationError(HttpServletRequest req, ItemMappingException e) {
         return createErrorResponse("Error: action cannot be performed.", e, HttpStatus.BAD_REQUEST);
     }
 

@@ -36,14 +36,15 @@ CREATE TABLE dish
     name          VARCHAR(120)   NOT NULL,
     price         DECIMAL(15, 2) NOT NULL,
     create_date   DATETIME       NOT NULL,
-    restaurant_id BIGINT         NULL, -- to handle unidirectional relationship separately
+    restaurant_id BIGINT         NOT NULL,
     CONSTRAINT restaurant_unique_dish_idx UNIQUE (restaurant_id, name),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 
 CREATE TABLE vote
 (
-    user_id       BIGINT PRIMARY KEY,
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id       BIGINT NOT NULL,
     restaurant_id BIGINT NOT NULL,
     vote_date     DATE   NOT NULL,
     CONSTRAINT user_unique_vote_date_idx UNIQUE (user_id, vote_date),

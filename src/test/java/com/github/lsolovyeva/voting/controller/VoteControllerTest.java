@@ -20,7 +20,7 @@ class VoteControllerTest extends MockMvcControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(containsString("\"id\":1")))
+                .andExpect(content().string(containsString("\"id\":3")))
                 .andExpect(content().string(containsString("voteDate")))
                 .andReturn();
     }

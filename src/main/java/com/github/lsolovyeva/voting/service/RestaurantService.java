@@ -23,19 +23,16 @@ public class RestaurantService {
     //@Transactional - already present for CRUD
     @CacheEvict(value = AppConfig.RESTAURANTS_CACHE, allEntries = true)
     public Restaurant save(Restaurant restaurant) {
-        Restaurant newRestaurant = new Restaurant();
-        newRestaurant.setName(restaurant.getName());
-        return restaurantRepository.save(newRestaurant);
+        return restaurantRepository.save(restaurant);
     }
 
     @Transactional
     @CacheEvict(value = AppConfig.RESTAURANTS_CACHE, allEntries = true)
-    public boolean update(Restaurant restaurant, Long restaurantId) {
+    public void update(Restaurant restaurant, Long restaurantId) {
         Restaurant restaurantToUpdate = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant " + restaurant.getName() + " not found."));
         restaurantToUpdate.setName(restaurant.getName());
         restaurantRepository.save(restaurantToUpdate);
-        return true;
     }
 
     @Cacheable(value = AppConfig.RESTAURANTS_CACHE)

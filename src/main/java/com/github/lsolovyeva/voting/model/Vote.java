@@ -5,24 +5,21 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "vote", schema = "votes", catalog = "voting",
-        uniqueConstraints = {@UniqueConstraint(name = "user_unique_vote_date_idx", columnNames = {"user_id", "vote_date"})})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vote {
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "vote", schema = "votes", catalog = "voting",
+        uniqueConstraints = {@UniqueConstraint(name = "user_unique_vote_date_idx", columnNames = {"user_id", "vote_date"})})
+public class Vote extends BaseEntity{
 
-    @Id
-    @Column(name = "user_id")
-    private Long id;
-
-    @MapsId
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;

@@ -19,9 +19,10 @@ public interface VoteRepository extends CrudRepository<Vote, Long> {
 
     Vote findByUserId(Long userId);
 
-    Vote findByUserIdAndRestaurantId(Long userId, Long restaurantId);
+    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.restaurant.id=:restaurantId AND v.voteDate=:todayDate")
+    Vote findByUserIdAndRestaurantIdForToday(Long userId, Long restaurantId, @Param("todayDate") LocalDate todayDate);
 
-    @Query("SELECT v FROM Vote v WHERE v.id=:userId AND v.voteDate=:todayDate")
+    @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.voteDate=:todayDate")
     Optional<Vote> findByUserIdForToday(@Param("userId") Long userId, @Param("todayDate") LocalDate todayDate);
 
     @Query("SELECT count(v) FROM Vote v WHERE v.restaurant.id = :restaurantId")

@@ -1,6 +1,7 @@
 package com.github.lsolovyeva.voting.service;
 
 import com.github.lsolovyeva.voting.config.AppConfig;
+import com.github.lsolovyeva.voting.exception.ItemMappingException;
 import com.github.lsolovyeva.voting.model.Dish;
 import com.github.lsolovyeva.voting.model.Restaurant;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,15 +28,16 @@ public class DishService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    @CacheEvict(value = AppConfig.DISHES_CACHE, allEntries = true)
-    public Dish addNewDish(Dish dish, Long restaurantId) {
+    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition="#dish.restaurant!=null")
+    public Dish add(Dish dish, Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " not found."));
-        if (restaurantRepository.findByRestaurantIdAndDishName(restaurantId, dish.getName()).isPresent()) {
-            throw new UnsupportedOperationException("Unable to add dish=" + dish.getName() + " to restaurant id=" +
+        if (dishRepository.findByRestaurantIdAndName(restaurantId, dish.getName()).isPresent()) {
+            throw new ItemMappingException("Unable to add dish=" + dish.getName() + " to restaurant id=" +
                     restaurantId + " : dish already exist.");
         }
 
+        dish.setRestaurant(restaurant);
         Dish newDish = dishRepository.save(dish);
         if (restaurant.getDishes() == null) {
             restaurant.setDishes(new ArrayList<>());
@@ -45,27 +47,22 @@ public class DishService {
     }
 
     @Transactional
-    @CacheEvict(value = AppConfig.DISHES_CACHE, allEntries = true)
-    public boolean updateDish(Dish dish, Long dishId) {
+    @CacheEvict(value = AppConfig.DISHES_CACHE, key = "#dish.restaurant.id", condition="#dish.restaurant!=null")
+    public void update(Dish dish, Long dishId) {
         Dish existingDish = dishRepository.findById(dishId)
                 .orElseThrow(() -> new EntityNotFoundException("Dish with id=" + dishId + " not found."));
         existingDish.setName(dish.getName());
         existingDish.setPrice(dish.getPrice());
         dishRepository.save(existingDish);
-        return true;
     }
 
     @Cacheable(value = AppConfig.DISHES_CACHE)
-    public List<Dish> getAllDishesForToday(Long restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdWithDishesForToday(restaurantId,
-                        LocalDate.now().atTime(LocalTime.MIDNIGHT), LocalDate.now().atTime(LocalTime.MAX))
-                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " and menu not found."));
-        return restaurant.getDishes();
+    public List<Dish> getAllForToday(Long restaurantId) {
+        return dishRepository.findByIdWithDishesForToday(restaurantId, LocalDate.now().atTime(LocalTime.MIDNIGHT),
+                LocalDate.now().atTime(LocalTime.MAX));
     }
 
-    public List<Dish> getAllDishes(Long restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdWithDishes(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id=" + restaurantId + " and menu not found."));
-        return restaurant.getDishes();
+    public List<Dish> getAll(Long restaurantId) {
+        return dishRepository.findAllByRestaurantId(restaurantId);
     }
 }
