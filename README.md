@@ -68,11 +68,12 @@ https://app.quickdatabasediagrams.com/ <br>
 #### Tech stack
 - Java 17
 - Maven
-- Spring Boot 3.0
+- Spring Boot 3.0 (Web, MVC, Data JPA, Cache, Security, Test)
 - H2 DB
 - Junit 5
+- Swagger
 
 #### Notes
 - *ServiceImpl classes are omitted for simplicity
 - Catalog=DB=VOTING, Schema=namespace=VOTES
-- Test coverage report: 100% classes and 82% lines covered
+- Test coverage report: 100% classes and 83% lines covered

@@ -4,11 +4,13 @@ import com.github.lsolovyeva.voting.config.AppConfig;
 import com.github.lsolovyeva.voting.exception.ItemMappingException;
 import com.github.lsolovyeva.voting.model.Dish;
 import com.github.lsolovyeva.voting.model.Restaurant;
+import com.github.lsolovyeva.voting.repository.DishRepository;
+import com.github.lsolovyeva.voting.repository.RestaurantRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.github.lsolovyeva.voting.repository.DishRepository;
-import com.github.lsolovyeva.voting.repository.RestaurantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DishService {
+    @Autowired
+    CacheManager cacheManager;
 
     private final DishRepository dishRepository;
     private final RestaurantRepository restaurantRepository;
